@@ -1,16 +1,30 @@
 import * as anchor from '@coral-xyz/anchor';
+import { startAnchor } from 'solana-bankrun'
+import { BankrunProvider } from 'anchor-bankrun'
 import { Program } from '@coral-xyz/anchor';
 import { Basic } from '../target/types/basic';
+import { Voting } from '../target/types/voting';
+import { PublicKey } from '@solana/web3.js';
 
-describe('basic', () => {
-  // Configure the client to use the local cluster.
-  anchor.setProvider(anchor.AnchorProvider.env());
+const IDL = JSON.parse(require('fs').readFileSync('./target/idl/voting.json', 'utf8'))
+const votingAddress = new PublicKey("6z68wfurCMYkZG51s1Et9BJEd9nJGUusjHXNt4dGbNNF")
 
-  const program = anchor.workspace.Basic as Program<Basic>;
+describe('Voting', () => {
+ 
+  it('Should initialize poll', async () => {
+    const context = await startAnchor("", [{ name: "voting", programId: votingAddress}], [])
+    const provider = new BankrunProvider(context)
 
-  it('should run the program', async () => {
-    // Add your test here.
-    const tx = await program.methods.greet().rpc();
-    console.log('Your transaction signature', tx);
+    const votingProgram = new Program<Voting>(
+      IDL,
+      provider
+    )
+
+    await votingProgram.methods.initializePoll(
+      new anchor.BN(1),
+      "Qual seu cachorro preferido?",
+      new anchor.BN(0),
+      new anchor.BN(2740615090)
+    ).rpc()
   });
 });
