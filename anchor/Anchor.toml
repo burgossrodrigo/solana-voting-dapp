@@ -6,7 +6,7 @@ resolution = true
 skip-lint = false
 
 [programs.localnet]
-basic = "6z68wfurCMYkZG51s1Et9BJEd9nJGUusjHXNt4dGbNNF"
+voting = "6z68wfurCMYkZG51s1Et9BJEd9nJGUusjHXNt4dGbNNF"
 
 [registry]
 url = "https://api.apr.dev"
@@ -19,7 +19,7 @@ wallet = "~/.config/solana/id.json"
 test = "../node_modules/.bin/jest --preset ts-jest"
 
 [test]
-startup_wait = 5000
+startup_wait = 100000
 shutdown_wait = 2000
 upgradeable = false
 
